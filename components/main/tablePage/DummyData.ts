@@ -1,0 +1,133 @@
+export type TDummyUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: "Active" | "Inactive" | "Pending";
+  createdAt: string;
+  lastLogin: string;
+  department: string;
+};
+
+export const dummyData: TDummyUser[] = [
+  {
+    id: "1",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    role: "Administrator",
+    status: "Active",
+    createdAt: "2024-01-15T10:30:00Z",
+    lastLogin: "2024-03-20T14:25:00Z",
+    department: "Engineering",
+  },
+  {
+    id: "2",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    role: "Manager",
+    status: "Active",
+    createdAt: "2024-02-01T09:15:00Z",
+    lastLogin: "2024-03-19T11:45:00Z",
+    department: "Marketing",
+  },
+  {
+    id: "3",
+    name: "Robert Johnson",
+    email: "robert.j@example.com",
+    role: "Developer",
+    status: "Active",
+    createdAt: "2024-02-10T14:20:00Z",
+    lastLogin: "2024-03-18T16:30:00Z",
+    department: "Engineering",
+  },
+  {
+    id: "4",
+    name: "Emily Wilson",
+    email: "emily.w@example.com",
+    role: "Designer",
+    status: "Pending",
+    createdAt: "2024-02-28T11:00:00Z",
+    lastLogin: "2024-03-15T10:15:00Z",
+    department: "Design",
+  },
+  {
+    id: "5",
+    name: "Michael Brown",
+    email: "michael.b@example.com",
+    role: "Analyst",
+    status: "Inactive",
+    createdAt: "2024-01-05T08:45:00Z",
+    lastLogin: "2024-02-28T13:20:00Z",
+    department: "Finance",
+  },
+  {
+    id: "6",
+    name: "Sarah Davis",
+    email: "sarah.d@example.com",
+    role: "Manager",
+    status: "Active",
+    createdAt: "2024-03-01T16:10:00Z",
+    lastLogin: "2024-03-20T09:30:00Z",
+    department: "Sales",
+  },
+  {
+    id: "7",
+    name: "David Miller",
+    email: "david.m@example.com",
+    role: "Developer",
+    status: "Active",
+    createdAt: "2024-02-15T13:25:00Z",
+    lastLogin: "2024-03-19T15:45:00Z",
+    department: "Engineering",
+  },
+  {
+    id: "8",
+    name: "Lisa Taylor",
+    email: "lisa.t@example.com",
+    role: "Support",
+    status: "Active",
+    createdAt: "2024-03-05T10:00:00Z",
+    lastLogin: "2024-03-20T12:15:00Z",
+    department: "Customer Service",
+  },
+  {
+    id: "9",
+    name: "Thomas Anderson",
+    email: "thomas.a@example.com",
+    role: "Administrator",
+    status: "Active",
+    createdAt: "2024-01-20T09:30:00Z",
+    lastLogin: "2024-03-20T17:00:00Z",
+    department: "IT",
+  },
+  {
+    id: "10",
+    name: "Maria Garcia",
+    email: "maria.g@example.com",
+    role: "Analyst",
+    status: "Pending",
+    createdAt: "2024-03-10T14:45:00Z",
+    lastLogin: "2024-03-18T11:20:00Z",
+    department: "Finance",
+  },
+  {
+    id: "11",
+    name: "James Wilson",
+    email: "james.w@example.com",
+    role: "Developer",
+    status: "Active",
+    createdAt: "2024-02-22T11:30:00Z",
+    lastLogin: "2024-03-19T14:10:00Z",
+    department: "Engineering",
+  },
+  {
+    id: "12",
+    name: "Jennifer Lee",
+    email: "jennifer.l@example.com",
+    role: "Designer",
+    status: "Active",
+    createdAt: "2024-02-05T15:20:00Z",
+    lastLogin: "2024-03-20T10:45:00Z",
+    department: "Design",
+  },
+];
