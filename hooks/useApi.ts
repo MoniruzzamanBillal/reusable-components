@@ -22,6 +22,54 @@ export const useFetchData = (
   });
 };
 
+interface IGenericResponse<T> {
+  data: T;
+  meta?: {
+    totalItems: number;
+    itemCount: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+    total_data: number;
+    current_page?: number;
+    next_page?: number;
+    previous_page?: number;
+    total_page?: number;
+    limit?: number;
+  };
+}
+
+export const useGet = <T = unknown>( // default type = unknown
+  endpoint: string,
+  queryKey: string[],
+  queryParams?: Record<string, unknown>,
+  options?: Omit<
+    UseQueryOptions<IGenericResponse<T>, IGenericResponse<T>, string[]>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  // Filter out empty/null params
+  const filteredParams = Object.fromEntries(
+    Object.entries(queryParams || {}).filter(
+      ([_, value]) => value !== "" && value != null,
+    ),
+  );
+
+  const finalQueryKey = [
+    ...queryKey,
+    ...Object.values(filteredParams).map(String),
+  ];
+
+  return useQuery<IGenericResponse<T>, IGenericResponse<T>, string[]>({
+    queryKey: finalQueryKey,
+    queryFn: () => apiGet(endpoint),
+
+    retry: false,
+    enabled: options?.enabled ?? true,
+    ...options,
+  });
+};
+
 export const usePost = (invalidateQueriesKeys?: Array<string[]>) => {
   const queryClient = useQueryClient();
 
