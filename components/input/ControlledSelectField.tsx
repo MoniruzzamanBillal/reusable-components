@@ -60,7 +60,7 @@ const ControlledSelectField: React.FC<ControlledSelectFieldProps> = ({
               >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
-              <SelectContent className=" bg-white ">
+              <SelectContent className=" bg-white " position="popper">
                 {options.map((opt) => (
                   <SelectItem key={opt.value} value={opt.value}>
                     {opt.label}
