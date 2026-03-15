@@ -1,11 +1,13 @@
 "use client";
 
 import GenericTable from "@/components/common/GenericTable";
+import DateSelect from "@/components/input/DateSelect";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 import { dummyData, TDummyUser } from "./dummyData/DummyData";
 import CreateUpdateForm from "./form/CreateUpdateForm";
 
@@ -13,9 +15,25 @@ export default function ControlledInputImplement() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState(null);
 
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
+
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
   const handleEdit = (row) => {
     setSelectedData(row);
     setIsModalOpen(true);
+  };
+
+  const handleDateChange = (date: Date | DateRange | undefined) => {
+    if (date === undefined || "from" in date) {
+      setSelectedDateRange(date as DateRange | undefined);
+    }
+
+    if (date === undefined || date instanceof Date) {
+      setSelectedDate(date);
+    }
   };
 
   // Table columns
@@ -191,6 +209,27 @@ export default function ControlledInputImplement() {
             table
           </p>
         </div>
+
+        {/*  */}
+
+        <div className=" bg-gray-100 py-10 ">
+          <DateSelect
+            value={selectedDateRange}
+            onChange={handleDateChange}
+            mode={"range"}
+            placeholder={"Select Date Range"}
+          />
+        </div>
+
+        <div className=" bg-gray-100 py-10 ">
+          <DateSelect
+            value={selectedDate}
+            onChange={handleDateChange}
+            placeholder={"Select Date "}
+          />
+        </div>
+
+        {/*  */}
 
         {/* Main Content */}
         <div className="">
