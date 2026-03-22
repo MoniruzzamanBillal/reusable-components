@@ -8,12 +8,16 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query";
 
-type TFetchOptions = Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">;
+type TFetchOptions<TData> = Omit<
+  UseQueryOptions<TData, Error>,
+  "queryKey" | "queryFn"
+>;
 
-export const useFetchData = (
+// ! updated useFetchHook with options - enabled , staleTime
+export const useFetch = <TData>(
   key: string[],
   endPoint: string,
-  options?: TFetchOptions,
+  options?: TFetchOptions<TData>,
 ) => {
   return useQuery({
     queryKey: key,
