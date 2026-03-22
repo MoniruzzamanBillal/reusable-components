@@ -28,7 +28,7 @@ export default function TableActionMenu<T>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="flex justify-center w-full">
-        <Button>
+        <Button className=" bg-neutral-800 ">
           <EllipsisVertical className="size-5" />
         </Button>
       </DropdownMenuTrigger>

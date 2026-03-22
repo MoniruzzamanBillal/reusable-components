@@ -3,9 +3,18 @@
 import BaseModal from "@/components/Modal/BaseModal";
 import ModalActionButtons from "@/components/Modal/ModalActionButtons";
 import PageHeader from "@/components/PageHeader/PageHeader";
+import GenericTableComponent from "@/components/table/GenericTableComponent";
 import TableActionMenu from "@/components/table/TableActionMenu";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
+import { roomData } from "./DummyRoomData";
+
+type TRoomInformation = {
+  roomFloor: string;
+  RoomNo: string;
+  roomStatus: string;
+  roomZone: string;
+};
 
 export type TRoom = {
   id: string;
@@ -17,13 +26,64 @@ export type TRoom = {
   RoomNo: string;
   status: string;
   roomZone: string;
+
+  roomInformation: TRoomInformation[];
 };
+
+const tableFilterOption = [
+  {
+    key: "nameOfBuilding",
+    label: "Building Name",
+    options: [
+      { label: "Administration Building", value: "Administration Building" },
+      { label: "Production Facility A", value: "Production Facility A" },
+      { label: "Warehouse Complex", value: "Warehouse Complex" },
+      {
+        label: "Research & Development Center",
+        value: "Research & Development Center",
+      },
+      { label: "Quality Control Lab", value: "Quality Control Lab" },
+      {
+        label: "Employee Welfare Building",
+        value: "Employee Welfare Building",
+      },
+      { label: "Maintenance Workshop", value: "Maintenance Workshop" },
+      { label: "Cold Storage Facility", value: "Cold Storage Facility" },
+    ],
+  },
+  {
+    key: "numberOfFloor",
+    label: "Floor Number",
+    options: [
+      { label: "Floor 1", value: "1" },
+      { label: "Floor 2", value: "2" },
+      { label: "Floor 3", value: "3" },
+      { label: "Floor 4", value: "4" },
+    ],
+  },
+  {
+    key: "createdBy",
+    label: "Created By",
+    options: [
+      { label: "John Doe", value: "John Doe" },
+      { label: "Sarah Ahmed", value: "Sarah Ahmed" },
+      { label: "Michael Brown", value: "Michael Brown" },
+      { label: "Emily Watson", value: "Emily Watson" },
+      { label: "Robert Chen", value: "Robert Chen" },
+      { label: "Fatima Begum", value: "Fatima Begum" },
+      { label: "David Kumar", value: "David Kumar" },
+      { label: "James Wilson", value: "James Wilson" },
+    ],
+  },
+];
 
 export default function TablePage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
   const [selectedRoomData, setSelectedRoomData] = useState<TRoom | undefined>();
+
+  const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const handleEditMenuClick = (room: TRoom) => {
     setSelectedRoomData(room);
@@ -91,10 +151,9 @@ export default function TablePage() {
 
   //
   return (
-    <div className="  bg-gray-200 h-screen  px-20 py-10  ">
+    <div className="  bg-gray-200 min-h-screen  px-20 py-10  ">
       {/*  */}
-      {/*  */}
-      {/*  */}
+
       <div className="mb-6">
         <PageHeader
           btnText="Add"
@@ -103,9 +162,14 @@ export default function TablePage() {
           pageName="Table"
         />
       </div>
-      {/*  */}
-      {/*  */}
-      {/*  */}
+
+      <GenericTableComponent
+        data={roomData}
+        columns={roomColumns}
+        tableFilterOption={tableFilterOption}
+        filters={filters}
+        setFilters={setFilters}
+      />
 
       <BaseModal
         className="  max-w-[400px] "
