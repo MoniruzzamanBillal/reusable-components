@@ -1,14 +1,9 @@
 "use client";
 
-import GenericTable from "@/components/common/GenericTable";
 import DateSelect from "@/components/input/DateSelect";
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Trash2 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { dummyData, TDummyUser } from "./dummyData/DummyData";
 import CreateUpdateForm from "./form/CreateUpdateForm";
 
 export default function ControlledInputImplement() {
@@ -21,11 +16,6 @@ export default function ControlledInputImplement() {
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
-  const handleEdit = (row) => {
-    setSelectedData(row);
-    setIsModalOpen(true);
-  };
-
   const handleDateChange = (date: Date | DateRange | undefined) => {
     if (date === undefined || "from" in date) {
       setSelectedDateRange(date as DateRange | undefined);
@@ -35,166 +25,6 @@ export default function ControlledInputImplement() {
       setSelectedDate(date);
     }
   };
-
-  // Table columns
-  const columns: ColumnDef<TDummyUser>[] = [
-    {
-      accessorKey: "avatar",
-      header: "Avatar",
-      cell: ({ row }) => (
-        <div className="flex items-center">
-          <Image
-            src={row.original.avatar || "https://i.pravatar.cc/150"}
-            alt={row.original.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        </div>
-      ),
-    },
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="font-medium text-gray-900">{row.original.name}</div>
-      ),
-    },
-    {
-      accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-600">{row.original.email}</div>
-      ),
-    },
-    {
-      accessorKey: "role",
-      header: "Role",
-      cell: ({ row }) => (
-        <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
-          {row.original.role}
-        </span>
-      ),
-    },
-    {
-      accessorKey: "department",
-      header: "Department",
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-700">{row.original.department}</div>
-      ),
-    },
-    {
-      accessorKey: "status",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Status
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const status = row.original.status;
-        const statusColors = {
-          Active: "bg-green-100 text-green-800",
-          Inactive: "bg-gray-100 text-gray-800",
-          Pending: "bg-yellow-100 text-yellow-800",
-        };
-
-        return (
-          <span
-            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${statusColors[status]}`}
-          >
-            {status}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: "salary",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Salary
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="text-sm font-medium text-gray-900">
-          ${row.original.salary.toLocaleString()}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "projects",
-      header: "Projects",
-      cell: ({ row }) => (
-        <div className="flex flex-wrap gap-1">
-          {row.original.projects.map((project, index) => (
-            <span
-              key={index}
-              className="inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700"
-            >
-              {project}
-            </span>
-          ))}
-        </div>
-      ),
-    },
-    {
-      header: "Actions",
-      id: "actions",
-      cell: ({ row }) => (
-        <div className="flex items-center gap-x-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleEdit(row)}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-          >
-            <Edit size={14} />
-            Edit
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            // onClick={() => handleDelete(row.original.id)}
-            className="flex items-center gap-2 text-red-600 hover:text-red-800"
-          >
-            <Trash2 size={14} />
-            Delete
-          </Button>
-        </div>
-      ),
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
@@ -250,13 +80,6 @@ export default function ControlledInputImplement() {
                   </Button>
                 </div>
               </div>
-
-              <GenericTable
-                data={dummyData}
-                columns={columns}
-                filterKey="name"
-                isLoading={false}
-              />
             </div>
 
             <CreateUpdateForm
