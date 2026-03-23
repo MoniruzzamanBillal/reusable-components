@@ -8,16 +8,39 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query";
 
+type TgenericResponse<TData> = {
+  data: TData;
+  statusCode: number;
+  success: boolean;
+  message: string;
+};
+
 type TFetchOptions<TData> = Omit<
+  UseQueryOptions<TgenericResponse<TData>, Error>,
+  "queryKey" | "queryFn"
+>;
+
+export const useFetchData = <TData>(
+  key: string[],
+  endPoint: string,
+  options?: TFetchOptions<TData>,
+) => {
+  return useQuery({
+    queryKey: key,
+    queryFn: () => apiGet(endPoint),
+    ...options,
+  });
+};
+
+type Legacy_TFetchOptions<TData> = Omit<
   UseQueryOptions<TData, Error>,
   "queryKey" | "queryFn"
 >;
 
-// ! updated useFetchHook with options - enabled , staleTime
-export const useFetch = <TData>(
+export const useFetch_Legacy = <TData>(
   key: string[],
   endPoint: string,
-  options?: TFetchOptions<TData>,
+  options?: Legacy_TFetchOptions<TData>,
 ) => {
   return useQuery({
     queryKey: key,
