@@ -30,8 +30,8 @@ export type TTableFilterGroup = {
 
 export type TTableFilterPopoverProps = {
   filters: TTableFilterGroup[];
-  value: Record<string, string[]>;
-  onChange: (val: Record<string, string[]>) => void;
+  value: Record<string, string>;
+  onChange: (val: Record<string, string>) => void;
 };
 
 export default function TableFilter({
@@ -41,21 +41,28 @@ export default function TableFilter({
 }: TTableFilterPopoverProps) {
   const [open, setOpen] = useState(false);
 
-  const handleCheckboxChange = (
+  const [accordionValue, setAccordionValue] = useState<string>(
+    filters.length > 0 ? filters[0].key : "",
+  );
+
+  const handleValueChange = (
     groupKey: string,
     optionValue: string,
     checked: boolean,
   ) => {
-    const existing = value[groupKey] || [];
-
-    const updated = checked
-      ? [...existing, optionValue]
-      : existing.filter((v) => v !== optionValue);
-
-    onChange({
-      ...value,
-      [groupKey]: updated,
-    });
+    if (checked) {
+      onChange({
+        ...value,
+        [groupKey]: optionValue,
+      });
+    } else {
+      if (value[groupKey] === optionValue) {
+        onChange({
+          ...value,
+          [groupKey]: "",
+        });
+      }
+    }
   };
 
   const handleReset = () => {
@@ -90,7 +97,13 @@ export default function TableFilter({
         </div>
 
         {/* Dynamic Accordion */}
-        <Accordion type="single" collapsible className="space-y-4">
+        <Accordion
+          type="single"
+          collapsible
+          className="space-y-4"
+          value={accordionValue}
+          onValueChange={setAccordionValue}
+        >
           {filters.map((group) => (
             <AccordionItem
               key={group.key}
@@ -101,7 +114,7 @@ export default function TableFilter({
                 {group.label}
               </AccordionTrigger>
 
-              <AccordionContent className="p-3 space-y-4 ">
+              <AccordionContent className="p-3 space-y-4 border-b  border-table-border  rounded-b-[8px]  ">
                 {group.options.map((option) => {
                   const isChecked =
                     value[group.key]?.includes(option.value) ?? false;
@@ -109,24 +122,20 @@ export default function TableFilter({
                   return (
                     <div
                       key={option.value}
-                      className="flex items-center gap-x-2"
+                      className="flex items-center gap-x-2  "
                     >
                       <Checkbox
-                        className="  border-neutral-400  data-[state=checked]:bg-red-500 data-[state=checked]:border-neutral-300 data-[state=checked]:text-neutral-100 "
+                        className=" dark:border-neutral-400  dark:data-[state=checked]:bg-primary-500 dark:data-[state=checked]:border-neutral-300 dark:data-[state=checked]:text-neutral-100 text-white "
                         id={`${group.key}-${option.value}`}
                         checked={isChecked}
                         onCheckedChange={(checked) =>
-                          handleCheckboxChange(
-                            group.key,
-                            option.value,
-                            !!checked,
-                          )
+                          handleValueChange(group.key, option.value, !!checked)
                         }
                       />
 
                       <label
                         htmlFor={`${group.key}-${option.value}`}
-                        className="  text-[0.875rem] font-medium cursor-pointer text-neutral-200 "
+                        className="  text-[0.875rem] leading-5.25 font-medium cursor-pointer text-neutral-100 dark:text-neutral-200 "
                       >
                         {option.label}
                       </label>

@@ -7,11 +7,26 @@ import { TablePagination } from "./TablePagination";
 type TableContentProps<TData> = {
   table: TanStackTable<TData>;
   showSerialNumber?: boolean;
+  isLoading?: boolean;
+
+  // !
+  totalItems: number;
+  totalPages?: number;
+  currentPage?: number;
+  itemsPerPage?: number;
+  onPageChange: (page: number) => void;
 };
 
 export default function TableContent<TData>({
   table,
   showSerialNumber = true,
+  isLoading = false,
+  // !
+  totalItems,
+  totalPages,
+  onPageChange,
+  currentPage,
+  itemsPerPage,
 }: TableContentProps<TData>) {
   return (
     <div className="  border border-neutral-900  bg-neutral-800 rounded-[8px] overflow-hidden  ">
@@ -70,7 +85,15 @@ export default function TableContent<TData>({
           </thead>
 
           <tbody>
-            {table.getRowModel().rows.length === 0 ? (
+            {isLoading && (
+              <tr>
+                <td colSpan={100} className="p-10 text-center text-lg">
+                  loading.....
+                </td>
+              </tr>
+            )}
+
+            {!isLoading && table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td colSpan={100} className="p-10 text-center text-lg">
                   No Data Available
@@ -78,35 +101,42 @@ export default function TableContent<TData>({
               </tr>
             ) : (
               <>
-                {table.getRowModel().rows.map((row, index: number) => (
-                  <tr
-                    key={row.id}
-                    className={`cursor-pointer border-b border-b-table-border  transition-colors last:border-0  h-20 `}
-                  >
-                    {showSerialNumber && (
-                      <td className="  py-4 px-5 font-medium text-[0.875rem] leading-5.25 text-neutral-50 ">
-                        {String(
-                          table.getState().pagination.pageIndex *
-                            table.getState().pagination.pageSize +
-                            index +
-                            1,
-                        ).padStart(2, "0")}
-                      </td>
-                    )}
+                {!isLoading &&
+                  table.getRowModel().rows.map((row, index: number) => (
+                    <tr
+                      key={row.id}
+                      className={`cursor-pointer border-b border-b-table-border  transition-colors last:border-0  h-20 `}
+                    >
+                      {showSerialNumber && (
+                        <td className="  py-4 px-5 font-medium text-[0.875rem] leading-5.25 text-neutral-50 ">
+                          {/* {String(
+                            table.getState().pagination.pageIndex *
+                              table.getState().pagination.pageSize +
+                              index +
+                              1,
+                          ).padStart(2, "0")} */}
 
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className="  py-4 px-5 font-medium text-[0.875rem] leading-5.25 text-neutral-50 "
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                          {String(
+                            (currentPage ?? 0) * (itemsPerPage ?? 10) +
+                              index +
+                              1,
+                          ).padStart(2, "0")}
+                        </td>
+                      )}
+
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="  py-4 px-5 font-medium text-[0.875rem] leading-5.25 text-neutral-50 "
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
               </>
             )}
           </tbody>
@@ -117,7 +147,17 @@ export default function TableContent<TData>({
 
       {/* pagination */}
 
-      {table?.getFilteredRowModel()?.rows?.length > 10 && (
+      {totalItems > 10 && (
+        <TablePagination
+          currentPage={(currentPage ?? 0) + 1}
+          itemsPerPage={itemsPerPage ?? 10}
+          totalPages={totalPages || 1}
+          totalItems={totalItems || 0}
+          onPageChange={(page) => onPageChange(page - 1)}
+        />
+      )}
+
+      {/* {table?.getFilteredRowModel()?.rows?.length > 10 && (
         <TablePagination
           currentPage={table.getState().pagination.pageIndex + 1}
           totalPages={table.getPageCount()}
@@ -125,7 +165,7 @@ export default function TableContent<TData>({
           itemsPerPage={table.getState().pagination.pageSize}
           onPageChange={(page) => table.setPageIndex(page - 1)}
         />
-      )}
+      )} */}
       {/*  */}
     </div>
   );

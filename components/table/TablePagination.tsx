@@ -109,7 +109,7 @@ export function TablePagination({
               <button
                 key={pageNumber}
                 onClick={() => onPageChange(pageNumber)}
-                className={`  p-1.5 rounded-[8px] size-8 font-semibold text-[0.875rem] leading-5.25 flex justify-center items-center border ${currentPage === pageNumber ? " bg-red-500 text-white border-red-400 " : " text-neutral-50 tablePaginationNumber tablePaginationGradientBorder  border-table-border "} `}
+                className={`  p-1.5 rounded-[8px] size-8 font-semibold text-[0.875rem] leading-5.25 flex justify-center items-center border ${currentPage === pageNumber ? " bg-red-500 text-white border-red-500 " : " text-neutral-50 tablePaginationNumber tablePaginationGradientBorder  border-table-border "} `}
                 aria-label={`Go to page ${pageNumber}`}
                 aria-current={currentPage === pageNumber ? "page" : undefined}
               >

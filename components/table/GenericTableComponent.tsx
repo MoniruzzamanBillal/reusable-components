@@ -20,13 +20,15 @@ import { TTableFilterGroup } from "./TableFilter";
 import TableToolbar from "./TableToolbar";
 
 type TGenericTableProps<TData> = {
+  isLoading?: boolean;
+
   data: TData[];
   columns: ColumnDef<TData>[];
   activeTab?: string;
 
   tableFilterOption?: TTableFilterGroup[];
-  filters?: Record<string, string[]>;
-  setFilters?: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
+  filters?: Record<string, string>;
+  setFilters?: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   showToolbar?: boolean;
   showDateFilter?: boolean;
 
@@ -38,6 +40,17 @@ type TGenericTableProps<TData> = {
 
   enableRowSelection?: boolean;
   onSelectedRowsChange?: (rows: TData[]) => void;
+
+  //
+  searchValue?: string;
+  onSearchChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+
+  // ! Pagination
+  totalItems: number;
+  totalPages?: number;
+  onPageChange: (page: number) => void;
+  currentPage?: number;
+  itemsPerPage?: number;
 };
 
 export default function GenericTableComponent<TData>({
@@ -57,6 +70,16 @@ export default function GenericTableComponent<TData>({
 
   enableRowSelection = false,
   onSelectedRowsChange,
+  searchValue,
+  onSearchChange,
+  isLoading = false,
+
+  // !
+  totalItems = 0,
+  totalPages,
+  onPageChange,
+  currentPage,
+  itemsPerPage,
 }: TGenericTableProps<TData>) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
@@ -128,6 +151,11 @@ export default function GenericTableComponent<TData>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+
+    // !
+
+    manualPagination: true,
+    pageCount: totalPages || 1,
   });
 
   useEffect(() => {
@@ -152,12 +180,25 @@ export default function GenericTableComponent<TData>({
             showDateFilter={showDateFilter}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            //
+            onSearchChange={onSearchChange}
+            searchValue={searchValue}
           />
         </div>
       )}
 
       <div className=" ">
-        <TableContent table={table} showSerialNumber={showSerialNumber} />
+        <TableContent
+          table={table}
+          showSerialNumber={showSerialNumber}
+          isLoading={isLoading}
+          // !
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          totalItems={totalItems}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
       </div>
     </>
   );
