@@ -1,19 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut } from "@/utils/api";
+import { TgenericResponse } from "@/utils/apiResponse";
 import {
   useMutation,
   useQuery,
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
-
-type TgenericResponse<TData> = {
-  data: TData;
-  statusCode: number;
-  success: boolean;
-  message: string;
-};
 
 type TFetchOptions<TData> = Omit<
   UseQueryOptions<TgenericResponse<TData>, Error>,
