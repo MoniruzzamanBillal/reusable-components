@@ -3,6 +3,7 @@ import ControlledInput from "@/components/input/ControlledInput";
 import ControlledMultiSelectField from "@/components/input/ControlledMultiSelectField";
 import ControlledSelectField from "@/components/input/ControlledSelectField";
 import { FileUploadController } from "@/components/input/FileUploadController";
+import FileUploadControllerDrag from "@/components/input/FileUploadControllerDrag";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -109,6 +110,8 @@ export default function CreateUpdateForm({ isOpen, onClose }: TPageProps) {
               label="Employee Photo"
               className="h-48"
             />
+
+            <FileUploadControllerDrag name="avatar" label="Employee Photo" />
 
             <ControlledInput
               name="name"
