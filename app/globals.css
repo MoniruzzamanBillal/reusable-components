@@ -126,6 +126,12 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+body {
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -133,4 +139,33 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.tablePaginationNumber {
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.tablePaginationGradientBorder {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(102, 102, 102, 0.08) 100%
+    ),
+    radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
 }
