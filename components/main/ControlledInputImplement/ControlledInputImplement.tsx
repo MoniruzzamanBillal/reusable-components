@@ -70,6 +70,14 @@ export default function ControlledInputImplement() {
                 <h2 className="text-xl font-semibold text-gray-800">
                   Employee Directory
                 </h2>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Add
+                </Button>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
