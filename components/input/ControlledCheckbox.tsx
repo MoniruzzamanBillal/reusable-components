@@ -1,6 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 
 type TControlledCheckboxProps = {
@@ -9,6 +10,7 @@ type TControlledCheckboxProps = {
   className?: string;
   isRequired?: boolean;
   disabled?: boolean;
+  lebelTextClass?: string;
 };
 
 export default function ControlledCheckbox({
@@ -17,6 +19,7 @@ export default function ControlledCheckbox({
   className,
   isRequired = false,
   disabled = false,
+  lebelTextClass,
 }: TControlledCheckboxProps) {
   const { control } = useFormContext();
 
@@ -38,7 +41,10 @@ export default function ControlledCheckbox({
             {label && (
               <label
                 htmlFor={name}
-                className="  text-sm sm:text-base leading-6 tracking-normal font-medium text-neutral-700 dark:text-neutral-50 cursor-pointer"
+                className={cn(
+                  "  text-sm sm:text-base leading-6 tracking-normal font-medium text-neutral-700 dark:text-neutral-50 cursor-pointer",
+                  lebelTextClass,
+                )}
               >
                 {label}
                 {isRequired && <span className="ml-1 text-red-500">*</span>}

@@ -1,5 +1,6 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 
 type TControlledITextAreaProps = {
@@ -28,9 +29,9 @@ export default function ControlledTextArea({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div className="space-y-1">
+        <div className="">
           {label && (
-            <label className="text-sm font-medium">
+            <label className="font-semibold text-neutral-700 dark:text-neutral-50  text-[0.875rem] leading-5.25   ">
               {label}
               {isRequired && <span className="ml-1 text-red-500">*</span>}
             </label>
@@ -41,7 +42,7 @@ export default function ControlledTextArea({
             rows={rows}
             placeholder={placeholder}
             value={field.value ?? ""}
-            className={className}
+            className={cn(className, "mt-2")}
           />
 
           {error && <p className="text-sm text-red-500">{error.message}</p>}

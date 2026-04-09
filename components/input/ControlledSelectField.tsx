@@ -41,7 +41,7 @@ const ControlledSelectField: React.FC<ControlledSelectFieldProps> = ({
         render={({ field, fieldState: { error } }) => (
           <div className="space-y-1">
             {label && (
-              <label className="text-sm font-medium">
+              <label className="font-semibold text-neutral-700 dark:text-neutral-50  text-[0.875rem] leading-5.25   ">
                 {label}
                 {isRequired && <span className="ml-1 text-red-500">*</span>}
               </label>

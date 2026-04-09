@@ -4,132 +4,99 @@ import BaseModal from "@/components/Modal/BaseModal";
 import ModalActionButtons from "@/components/Modal/ModalActionButtons";
 import PageHeader from "@/components/PageHeader/PageHeader";
 import GenericTableComponent from "@/components/table/GenericTableComponent";
-import TableActionMenu from "@/components/table/TableActionMenu";
-import { ColumnDef } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
-import { roomData } from "../tablePage/DummyRoomData";
+import { useFetchData } from "@/hooks/useApi";
+import { usePagination } from "@/hooks/usePagination";
+import { useSearchDebounce } from "@/hooks/useSearchDebounce";
+import { useEffect, useState } from "react";
 import { TRoom } from "../tablePage/TablePage";
+import GetTablePageColumn from "../tablePage/TablePageColumn/GetTablePageColumn";
 
 const tableFilterOption = [
   {
-    key: "nameOfBuilding",
-    label: "Building Name",
+    key: "activeStatus",
+    label: "Status",
     options: [
-      { label: "Administration Building", value: "Administration Building" },
-      { label: "Production Facility A", value: "Production Facility A" },
-      { label: "Warehouse Complex", value: "Warehouse Complex" },
-      {
-        label: "Research & Development Center",
-        value: "Research & Development Center",
-      },
-      { label: "Quality Control Lab", value: "Quality Control Lab" },
-      {
-        label: "Employee Welfare Building",
-        value: "Employee Welfare Building",
-      },
-      { label: "Maintenance Workshop", value: "Maintenance Workshop" },
-      { label: "Cold Storage Facility", value: "Cold Storage Facility" },
-    ],
-  },
-  {
-    key: "numberOfFloor",
-    label: "Floor Number",
-    options: [
-      { label: "Floor 1", value: "1" },
-      { label: "Floor 2", value: "2" },
-      { label: "Floor 3", value: "3" },
-      { label: "Floor 4", value: "4" },
-    ],
-  },
-  {
-    key: "createdBy",
-    label: "Created By",
-    options: [
-      { label: "John Doe", value: "John Doe" },
-      { label: "Sarah Ahmed", value: "Sarah Ahmed" },
-      { label: "Michael Brown", value: "Michael Brown" },
-      { label: "Emily Watson", value: "Emily Watson" },
-      { label: "Robert Chen", value: "Robert Chen" },
-      { label: "Fatima Begum", value: "Fatima Begum" },
-      { label: "David Kumar", value: "David Kumar" },
-      { label: "James Wilson", value: "James Wilson" },
+      { label: "Active", value: "1" },
+      { label: "Inactive", value: "0" },
     ],
   },
 ];
 
 export default function TableRowSelectPage() {
+  const { search, handleSearchChange, debouncedSearch } =
+    useSearchDebounce(500);
+  const {
+    setCurrentPage,
+    itemsPerPage,
+    currentPage,
+    totalItems,
+    setTotalItems,
+  } = usePagination();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
   const [selectedRoomData, setSelectedRoomData] = useState<TRoom | undefined>();
 
-  const [filters, setFilters] = useState<Record<string, string[]>>({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
 
   const [selectedRows, setSelectedRows] = useState<TRoom[]>([]);
+
+  const params = new URLSearchParams({
+    page: currentPage?.toString(),
+    size: itemsPerPage?.toString() || "10",
+  });
+
+  if (debouncedSearch) {
+    params.set("searchTerm", debouncedSearch);
+  }
+
+  const apiEndpoint = `/rooms?${params?.toString()}`;
+
+  const { data, isLoading } = useFetchData<TRoom>(
+    [
+      "all-room",
+      currentPage?.toString(),
+      itemsPerPage?.toString(),
+      debouncedSearch,
+      // filters.activeStatus,
+    ],
+    apiEndpoint,
+  );
+
+  // console.log("data = ", data);
+
+  // ! Update total items whenever data changes
+  useEffect(() => {
+    if (data) {
+      setTotalItems(data?.meta?.totalItems || 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const handleEditMenuClick = (room: TRoom) => {
     setSelectedRoomData(room);
     setIsModalOpen(true);
   };
 
+  const handleDeleteClick = (room: TRoom) => {
+    console.log("delete room id =", deleteItemId);
+    console.log("delere room = ", room);
+  };
+
   const handleDeleteItem = () => {
     console.log("delete room id =", deleteItemId);
   };
 
-  const roomColumns = useMemo<ColumnDef<TRoom>[]>(
-    () => [
-      {
-        accessorKey: "building",
-        header: "Name of Building",
-        enableSorting: true,
-      },
-      {
-        accessorKey: "buildingCode",
-        header: "Building Code",
-        enableSorting: true,
-      },
-      {
-        accessorKey: "floor",
-        header: "Number of Floor",
-        enableSorting: false,
-      },
-      {
-        accessorKey: "RoomNo",
-        header: "Number of Room",
-        enableSorting: false,
-      },
-
-      {
-        accessorKey: "addedDate",
-        header: "Added Date",
-        enableSorting: false,
-      },
-      {
-        accessorKey: "createdBy",
-        header: "Created By",
-        enableSorting: false,
-      },
-      {
-        id: "actions",
-        header: "Action",
-        enableSorting: false,
-        cell: ({ row }) => {
-          const room = row.original;
-          return (
-            <TableActionMenu
-              rowData={room}
-              onDelete={(data: TRoom) => {
-                setIsDeleteModalOpen(true);
-                setDeleteItemId(data.id);
-              }}
-              onEdit={(data: TRoom) => handleEditMenuClick(data)}
-            />
-          );
-        },
-      },
-    ],
-    [],
+  const roomColumns = GetTablePageColumn(
+    handleEditMenuClick,
+    handleDeleteClick,
   );
+
+  const totalPages =
+    data?.meta?.totalPage || Math.ceil(totalItems / itemsPerPage);
+
+  const roomData = Array.isArray(data?.data) ? data?.data : [];
 
   return (
     <div className="  bg-gray-200 min-h-screen  px-20 py-10  ">
@@ -151,6 +118,15 @@ export default function TableRowSelectPage() {
         showSerialNumber={false}
         enableRowSelection={true}
         onSelectedRowsChange={setSelectedRows}
+        // !
+        onSearchChange={handleSearchChange}
+        searchValue={search}
+        // !
+        totalItems={totalItems}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
       />
 
       <BaseModal
