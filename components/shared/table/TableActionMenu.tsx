@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { EllipsisVertical, SquarePen, Trash2 } from "lucide-react";
-import { Button } from "../ui/button";
 
 type TableActionMenuProps<T> = {
   rowData: T;

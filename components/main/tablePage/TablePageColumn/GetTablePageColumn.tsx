@@ -1,4 +1,4 @@
-import TableActionMenu from "@/components/table/TableActionMenu";
+import TableActionMenu from "@/components/shared/table/TableActionMenu";
 import { ColumnDef } from "@tanstack/react-table";
 import { TRoom } from "../TablePage";
 

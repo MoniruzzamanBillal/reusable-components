@@ -1,9 +1,9 @@
 "use client";
-import ControlledInput from "@/components/input/ControlledInput";
-import ControlledMultiSelectField from "@/components/input/ControlledMultiSelectField";
-import ControlledSelectField from "@/components/input/ControlledSelectField";
-import { FileUploadController } from "@/components/input/FileUploadController";
-import FileUploadControllerDrag from "@/components/input/FileUploadControllerDrag";
+
+import ControlledInput from "@/components/shared/input/ControlledInput";
+import ControlledMultiSelectField from "@/components/shared/input/ControlledMultiSelectField";
+import ControlledSelectField from "@/components/shared/input/ControlledSelectField";
+import FileUploadControllerDrag from "@/components/shared/input/FileUploadControllerDrag";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -105,11 +105,11 @@ export default function CreateUpdateForm({ isOpen, onClose }: TPageProps) {
         {/*  */}
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
-            <FileUploadController
+            {/* <FileUploadController
               name="avatar"
               label="Employee Photo"
               className="h-48"
-            />
+            /> */}
 
             <FileUploadControllerDrag name="avatar" label="Employee Photo" />
 

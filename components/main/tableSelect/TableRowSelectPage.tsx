@@ -1,9 +1,9 @@
 "use client";
 
-import BaseModal from "@/components/Modal/BaseModal";
-import ModalActionButtons from "@/components/Modal/ModalActionButtons";
-import PageHeader from "@/components/PageHeader/PageHeader";
-import GenericTableComponent from "@/components/table/GenericTableComponent";
+import BaseModal from "@/components/shared/Modal/BaseModal";
+import ModalActionButtons from "@/components/shared/Modal/ModalActionButtons";
+import PageHeader from "@/components/shared/PageHeader/PageHeader";
+import GenericTableComponent from "@/components/shared/table/GenericTableComponent";
 import { useFetchData } from "@/hooks/useApi";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchDebounce } from "@/hooks/useSearchDebounce";

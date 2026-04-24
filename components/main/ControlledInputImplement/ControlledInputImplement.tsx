@@ -1,6 +1,6 @@
 "use client";
 
-import DateSelect from "@/components/input/DateSelect";
+import DateSelect from "@/components/shared/input/DateSelect";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
