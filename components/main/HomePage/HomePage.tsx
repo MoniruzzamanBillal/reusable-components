@@ -23,11 +23,11 @@ export default function HomePage() {
       <h1>HomePage</h1>
       <h1>HomePage</h1>
       <h1>HomePage</h1>
-      <h1>HomePage</h1>
-      <h1>HomePage</h1>
-      <h1>HomePage</h1>
-      <h1>HomePage</h1>
-      <h1>HomePage</h1>
+
+      {/*  */}
+      <h1>HomePage new </h1>
+      <h1>HomePage new </h1>
+      <h1>HomePage new </h1>
     </div>
   );
 }
